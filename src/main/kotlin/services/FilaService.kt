@@ -10,6 +10,7 @@ import models.Filas
 import models.TipoAtendimento
 import models.Mesa
 import models.ConfiguracaoQrCode
+import models.TipoAcao
 import repository.FilaRepository
 import java.time.Instant
 import java.util.UUID
@@ -63,7 +64,9 @@ class FilaService(
         )
 
         val criada = filaRepository.insertFilas(fila) ?: throw ApiException(500, "Erro ao criar fila")
-        auditoriaService.log("FILA_CREATE", "Fila ${criada.nome} criada", criada.id)
+
+        // CORREÇÃO: Passando o Enum TipoAcao.CRIAR e o nome da entidade "Fila"
+        auditoriaService.log(TipoAcao.CRIAR, "Fila", "Fila ${criada.nome} criada", criada.id)
 
         return criada
     }

@@ -1,7 +1,7 @@
 package services
 
 import dtos.request.CreateInstituicaoRequest
-import dtos.request.UpdateFilaRequest
+import dtos.request.UpdateInstituicaoRequest
 import models.Instituicao
 import models.StatusInstituicao
 import repository.InstituicaoRepository
@@ -11,7 +11,7 @@ class InstituicaoService(
     private val repository: InstituicaoRepository
 )  {
 
-   fun criarInstituicao(request: InstituicaoRequest): Instituicao {
+    fun criarInstituicao(request: CreateInstituicaoRequest): Instituicao {
         val novaInstituicao = Instituicao(
             nome = request.nome,
             cnpj = request.cnpj,
@@ -27,13 +27,13 @@ class InstituicaoService(
         return repository.insert(novaInstituicao)
     }
 
-     fun buscarPorId(id: String): Instituicao? = repository.findById(id)
+    fun buscarPorId(id: String): Instituicao? = repository.findById(id)
 
-     fun listarTodas(page: Int, limit: Int): Pair<List<Instituicao>, Long> {
+    fun listarTodas(page: Int, limit: Int): Pair<List<Instituicao>, Long> {
         return repository.findAll(page, limit)
     }
 
-     fun atualizarInstituicao(id: String, request: UpdateFilaRequest): Boolean {
+    fun atualizarInstituicao(id: String, request: UpdateInstituicaoRequest): Boolean {
         val updates = mapOf(
             "nome" to request.nome,
             "cnpj" to request.cnpj,
@@ -43,7 +43,7 @@ class InstituicaoService(
         return repository.update(id, updates)
     }
 
-     fun aprovarInstituicao(id: String, aprovadorId: String): Boolean {
+    fun aprovarInstituicao(id: String, aprovadorId: String): Boolean {
         val updates = mapOf(
             "status" to setOf(StatusInstituicao.APROVADA),
             "aprovadoPor" to aprovadorId,
@@ -53,5 +53,3 @@ class InstituicaoService(
         return repository.update(id, updates)
     }
 }
-
-
