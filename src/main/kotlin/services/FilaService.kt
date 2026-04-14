@@ -65,15 +65,14 @@ class FilaService(
 
         val criada = filaRepository.insertFilas(fila) ?: throw ApiException(500, "Erro ao criar fila")
 
-        // CORREÇÃO: Passando o Enum TipoAcao.CRIAR e o nome da entidade "Fila"
+
         auditoriaService.log(TipoAcao.CRIAR, "Fila", "Fila ${criada.nome} criada", criada.id)
 
         return criada
     }
 
     fun atualizar(id: String, request: UpdateFilaRequest): Boolean {
-        buscarPorId(id) // verifica existência
-
+        buscarPorId(id)
         val updates = mutableMapOf<String, Any?>()
         request.nome?.let { updates["nome"] = it }
         request.ativa?.let { updates["ativa"] = it }
